@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffec, useCallbackt} from 'react';
 import {StyleSheet, TextInput, Text, View, Button} from 'react-native';
 import useChat from './useChat';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -14,23 +14,20 @@ const ChatRoom = (props) => {
     sendMessage(newMessage);
     setNewMessage('');
   };
-  const chatMessages = messages.map((message, idx) => (
-    <Text style={{borderWidth: 2, top: 500}} key={idx}>
-      {message.body}
-    </Text>
-  ));
+
   return (
     <View style={styles.container}>
-      {chatMessages}
-      <TextInput
-        style={{height: 40, borderWidth: 2, top: 200}}
-        autoCorrect={false}
-        value={messages}
-        onChangeText={(chatMessage) => {
-          setNewMessage(chatMessage);
+      <GiftedChat
+        messages={messages}
+        text={newMessage}
+        onInputTextChanged={handleNewMessageChange}
+        onSend={handleSendMessage}
+        inverted={false}
+        bottomOffset={80}
+        user={{
+          _id: '1',
         }}
       />
-      <Button title="Submit" onPress={handleSendMessage} />
     </View>
   );
 };
@@ -38,7 +35,7 @@ const ChatRoom = (props) => {
 export default ChatRoom;
 const styles = StyleSheet.create({
   container: {
-    height: 400,
+    height: 200,
     flex: 1,
     backgroundColor: '#F5FCFF',
   },
