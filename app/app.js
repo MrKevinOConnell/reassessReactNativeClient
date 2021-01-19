@@ -2,17 +2,9 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ChatRoom from './ChatRoom';
+import GoalsPage from './GoalsPage';
 import {Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-function GoalsScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Goals!</Text>
-    </View>
-  );
-}
-
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -23,6 +15,7 @@ export default function App() {
           name="Chat"
           component={ChatRoom}
           options={{
+            title: 'Chat',
             tabBarLabel: 'Chat',
             tabBarIcon: ({color, size}) => (
               <Ionicons
@@ -35,7 +28,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Goals"
-          component={GoalsScreen}
+          component={GoalsPage}
           options={{
             tabBarLabel: 'Goals',
             tabBarIcon: ({color, size}) => (

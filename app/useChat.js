@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import uuid from 'uuid-random';
+import UUIDGenerator from 'react-native-uuid-generator';
 import axios from 'axios';
 import SocketIOClient from 'socket.io-client';
 
@@ -20,7 +20,7 @@ const useChat = () => {
       })
       .then((res) => {
         const messages = res.data;
-        setMessages(messages);
+        if (messages) setMessages(messages);
       });
   }, []);
 
@@ -53,11 +53,13 @@ const useChat = () => {
     };
   }, [id]);
   const sendMessage = (message) => {
-    socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
-      _id: uuid(),
-      createdAt: new Date(),
-      text: message,
-      user: {_id: '1'},
+    UUIDGenerator.getRandomUUID().then((uuid) => {
+      socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
+        _id: uuid,
+        createdAt: new Date(),
+        text: message,
+        user: {_id: '1'},
+      });
     });
   };
   return {messages, sendMessage};
