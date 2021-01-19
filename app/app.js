@@ -30,6 +30,7 @@ export default function App() {
           name="Goals"
           component={GoalsPage}
           options={{
+            title: 'Goals',
             tabBarLabel: 'Goals',
             tabBarIcon: ({color, size}) => (
               <Ionicons name="checkmark-outline" color={color} size={size} />

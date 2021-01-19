@@ -49,7 +49,6 @@ const ChatRoom = (props) => {
       />
     );
   };
-
   if (searchBarOn) {
     return (
       <View style={styles.container}>
