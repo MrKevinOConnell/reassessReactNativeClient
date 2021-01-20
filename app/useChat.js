@@ -12,16 +12,20 @@ const useChat = () => {
   const id = '100';
 
   useEffect(() => {
-    axios
-      .get(`${SOCKET_SERVER_URL}/api/chatrooms/${id}/messages`, {
-        params: {
-          id: id,
-        },
-      })
-      .then((res) => {
-        const messages = res.data;
-        if (messages) setMessages(messages);
-      });
+    async function getMessages() {
+      await axios
+        .get(`${SOCKET_SERVER_URL}/api/chatrooms/${id}/messages`, {
+          params: {
+            id: id,
+          },
+        })
+        .then((res) => {
+          const recievedMessages = res.data;
+          if (messages.length !== recievedMessages.length)
+            setMessages(messages);
+        });
+    }
+    getMessages();
   }, []);
 
   useEffect(() => {
@@ -36,16 +40,19 @@ const useChat = () => {
       };
       setMessages((messages) => [...messages, incomingMessage]);
       const payload = {id, message};
-      axios
-        .post(`${SOCKET_SERVER_URL}/api/chatrooms/${id}/messages`, payload)
-        .then((response) => {
-          if (response.data.status) {
-            console.log(response);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      async function addMessage() {
+        await axios
+          .post(`${SOCKET_SERVER_URL}/api/chatrooms/${id}/messages`, payload)
+          .then((response) => {
+            if (response.data.status) {
+              console.log(response);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      addMessage();
     });
 
     return () => {
@@ -58,11 +65,19 @@ const useChat = () => {
         _id: uuid,
         createdAt: new Date(),
         text: message,
-        user: {_id: '1'},
+        user: {
+          _id: '1',
+          name: 'Kevin',
+        },
       });
     });
   };
-  return {messages, sendMessage};
+
+  const filterMessages = (messages) => {
+    setMessages(messages);
+  };
+
+  return {messages, sendMessage, filterMessages};
 };
 
 export default useChat;
