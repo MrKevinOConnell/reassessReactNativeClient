@@ -40,7 +40,6 @@ const ChatRoom = (props) => {
     );
     finishedFilter = finishedFilter.concat(filter);
     finishedFilter = finishedFilter.sort((a, b) => a.createdAt > b.createdAt);
-    console.log('finishedFilter', finishedFilter);
     if (event.length === 1 && !storedTempValues) {
       setTempMessages(messages);
       setStoredTempValues(true);
