@@ -34,8 +34,14 @@ const ChatRoom = (props) => {
 
   const handleSearchBarChange = (event) => {
     setSearchMessage(event);
+    const filter = messages.filter((message) => message.text.includes(event));
+    var finishedFilter = tempMessages.filter(
+      (message) => !filter.includes(message) && message.text.includes(event),
+    );
+    finishedFilter = finishedFilter.concat(filter);
+    finishedFilter = finishedFilter.sort((a, b) => a.createdAt > b.createdAt);
+    console.log('finishedFilter', finishedFilter);
     if (event.length === 1 && !storedTempValues) {
-      const filter = messages.filter((message) => message.text.includes(event));
       setTempMessages(messages);
       setStoredTempValues(true);
       filterMessages(filter);
@@ -44,17 +50,21 @@ const ChatRoom = (props) => {
       setTempMessages([]);
       setStoredTempValues(false);
     } else {
-      const filter = messages.filter((message) => message.text.includes(event));
-      filterMessages(filter);
+      if (finishedFilter.length > filter.length) {
+        filterMessages(finishedFilter);
+      } else {
+        filterMessages(filter);
+      }
     }
   };
 
   const _handleSearch = () => {
     searchBarOn ? setSearchBar(false) : setSearchBar(true);
-    if (!searchBarOn) {
-      setTempMessages([]);
+    if (searchBarOn) {
+      filterMessages(tempMessages);
       setSearchMessage('');
       setStoredTempValues(false);
+      setTempMessages([]);
     }
   };
   const handleSendMessage = () => {
