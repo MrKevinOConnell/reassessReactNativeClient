@@ -9,11 +9,14 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import {store} from '../store';
 import Modal from 'react-native-modal';
 import useChat from './useChat';
 import {Appbar, Searchbar} from 'react-native-paper';
 import {GiftedChat, InputToolbar} from 'react-native-gifted-chat';
 const ChatRoom = (props) => {
+  const [globalState, dispatch] = store();
+  const {currentUser} = globalState;
   const [id, setId] = useState('100');
   const {messages, sendMessage, filterMessages} = useChat(id);
   const [newMessage, setNewMessage] = useState('');
@@ -30,6 +33,11 @@ const ChatRoom = (props) => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const signOut = () => {
+    setModalVisible(!isModalVisible);
+    dispatch({type: 'LOGOUT_USER'});
   };
 
   const handleSearchBarChange = (event) => {
@@ -86,6 +94,9 @@ const ChatRoom = (props) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setModalVisible(false)}>
             <Text style={styles.issueButton}> HAVE AN ISSUE? </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={signOut}>
+            <Text> SIGN OUT </Text>
           </TouchableOpacity>
         </View>
       </Modal>
