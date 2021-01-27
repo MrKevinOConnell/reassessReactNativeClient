@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -23,6 +23,7 @@ const GoalsPage = (props) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [clickedOnGoal, setClickedOnGoal] = useState(false);
+
   const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -34,73 +35,77 @@ const GoalsPage = (props) => {
   };
 
   const [fieldValues, setFieldValues] = useState({
-    dailyGoal: '',
-    weeklyGoal: '',
-    monthlyGoal: '',
-    yearlyGoal: '',
+    dailyGoals: '',
+    weeklyGoals: '',
+    monthlyGoals: '',
+    yearlyGoals: '',
   });
+
+  const goalsRef = useRef();
+
+  goalsRef.current = fieldValues;
 
   const updateDailyGoal = (e) => {
     setFieldValues({
       ...fieldValues,
-      dailyGoal: e,
+      dailyGoals: e,
     });
   };
 
   const updateWeeklyGoal = (e) => {
     setFieldValues({
       ...fieldValues,
-      weeklyGoal: e,
+      weeklyGoals: e,
     });
   };
 
   const updateMonthlyGoal = (e) => {
     setFieldValues({
       ...fieldValues,
-      monthlyGoal: e,
+      monthlyGoals: e,
     });
   };
   const updateYearlyGoal = (e) => {
     setFieldValues({
       ...fieldValues,
-      yearlyGoal: e,
+      yearlyGoals: e,
     });
   };
-  const {dailyGoal, weeklyGoal, monthlyGoal, yearlyGoal} = fieldValues;
+
+  const {dailyGoals, weeklyGoals, monthlyGoals, yearlyGoals} = fieldValues;
   const onSave = async () => {
     try {
       dispatch({
         type: 'UPDATE_GOALS',
         payload: {
-          dailyGoal,
-          weeklyGoal,
-          monthlyGoal,
-          yearlyGoal,
+          dailyGoals: goalsRef.current.dailyGoals.split(','),
+          weeklyGoals: goalsRef.current.weeklyGoals.split(','),
+          monthlyGoals: goalsRef.current.monthlyGoals.split(','),
+          yearlyGoals: goalsRef.current.yearlyGoals.split(','),
           id: currentUser.id,
           email: currentUser.email,
         },
       });
-      const jsonGoals = JSON.stringify(fieldValues);
-      console.log('json', jsonGoals);
-      await AsyncStorage.setItem('userGoals', jsonGoals);
+      const user = JSON.stringify(goalsRef.current);
+      await AsyncStorage.setItem('goals', user);
     } catch (e) {}
   };
 
   const getGoals = async () => {
     try {
-      const jsonGoals = await AsyncStorage.getItem('userGoals');
-      if (jsonGoals !== null) {
-        return await JSON.parse(jsonGoals);
+      const user = await AsyncStorage.getItem('goals');
+      if (user) {
+        const goals = JSON.parse(user);
+        console.log(goals.dailyGoals);
+        setFieldValues(goals);
       }
     } catch (e) {
       console.log(e);
     }
   };
-
   useEffect(() => {
     async function grabGoals() {
-      const goals = await getGoals();
-      setFieldValues(goals);
+      await getGoals();
     }
     async function setGoals() {
       await onSave();
@@ -154,7 +159,7 @@ const GoalsPage = (props) => {
               <TextInput
                 onTouchStart={() => setClickedOnGoal(true)}
                 style={styles.usergoals}
-                value={dailyGoal}
+                value={dailyGoals}
                 placeholder="What is something you want to do every day?"
                 onChangeText={updateDailyGoal}
                 onEndEditing={() => {
@@ -167,7 +172,7 @@ const GoalsPage = (props) => {
               <TextInput
                 onTouchStart={() => setClickedOnGoal(true)}
                 style={styles.usergoals}
-                value={weeklyGoal}
+                value={weeklyGoals}
                 placeholder="What is something you want to do every week?"
                 onChangeText={updateWeeklyGoal}
                 onEndEditing={() => {
@@ -180,7 +185,7 @@ const GoalsPage = (props) => {
               <TextInput
                 onTouchStart={() => setClickedOnGoal(true)}
                 style={styles.usergoals}
-                value={monthlyGoal}
+                value={monthlyGoals}
                 placeholder="What is something you want to do every month?"
                 onChangeText={updateMonthlyGoal}
                 onEndEditing={() => {
@@ -193,7 +198,7 @@ const GoalsPage = (props) => {
               <TextInput
                 onTouchStart={() => setClickedOnGoal(true)}
                 style={styles.usergoals}
-                value={yearlyGoal}
+                value={yearlyGoals}
                 placeholder="What is something you want to do every year?"
                 onChangeText={updateYearlyGoal}
                 onEndEditing={() => {

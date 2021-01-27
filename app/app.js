@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Routes from './routes';
 
-import {Provider, store} from '../store';
+import {Provider} from '../store';
 import 'react-native-gesture-handler';
 
 export default function App() {
