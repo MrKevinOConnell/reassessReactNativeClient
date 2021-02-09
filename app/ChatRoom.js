@@ -67,7 +67,7 @@ const ChatRoom = (props) => {
 
   const _handleSearch = () => {
     searchBarOn ? setSearchBar(false) : setSearchBar(true);
-    if (searchBarOn) {
+    if (searchBarOn && searchMessage !== '') {
       filterMessages(tempMessages);
       setSearchMessage('');
       setStoredTempValues(false);
@@ -118,7 +118,7 @@ const ChatRoom = (props) => {
     return (
       <View style={styles.container}>
         <Appbar.Header style={styles.appbar}>
-          <Appbar.Content title="Kevin" subtitle="insert online status here" />
+          <Appbar.Content title="Kevin" subtitle="Online!"/>
           <Appbar.Action icon="magnify" onPress={_handleSearch} />
           <Appbar.Action icon={MORE_ICON} onPress={toggleModal} />
         </Appbar.Header>
@@ -146,7 +146,7 @@ const ChatRoom = (props) => {
     return (
       <View style={styles.container}>
         <Appbar.Header style={styles.appbar}>
-          <Appbar.Content title="Kevin" subtitle="insert online status here" />
+           <Appbar.Content title="Kevin" subtitle="Online!"/>
           <Appbar.Action icon="magnify" onPress={_handleSearch} />
           <Appbar.Action
             icon={MORE_ICON}

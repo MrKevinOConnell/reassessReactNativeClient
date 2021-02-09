@@ -96,7 +96,6 @@ const GoalsPage = (props) => {
       const user = await AsyncStorage.getItem('goals');
       if (user) {
         const goals = JSON.parse(user);
-        console.log(goals.dailyGoals);
         setFieldValues(goals);
       }
     } catch (e) {
@@ -155,12 +154,12 @@ const GoalsPage = (props) => {
           scrollEnabled={false}>
           <View>
             <View style={styles.goalContainer}>
-              <Text style={styles.goalLabels}>Daily Goal:</Text>
+              <Text style={styles.goalLabels}>Daily Goals:</Text>
               <TextInput
                 onTouchStart={() => setClickedOnGoal(true)}
                 style={styles.usergoals}
                 value={dailyGoals}
-                placeholder="What is something you want to do every day?"
+                placeholder="get up at 8AM."
                 onChangeText={updateDailyGoal}
                 onEndEditing={() => {
                   setClickedOnGoal(false);
@@ -168,12 +167,13 @@ const GoalsPage = (props) => {
               />
             </View>
             <View style={styles.goalContainer}>
-              <Text style={styles.goalLabels}>Weekly Goal:</Text>
+              <Text style={styles.goalLabels}>Weekly Goals:</Text>
               <TextInput
                 onTouchStart={() => setClickedOnGoal(true)}
+                multiline={true}
                 style={styles.usergoals}
                 value={weeklyGoals}
-                placeholder="What is something you want to do every week?"
+                placeholder="Work out two days, reach out to 4 people."
                 onChangeText={updateWeeklyGoal}
                 onEndEditing={() => {
                   setClickedOnGoal(false);
@@ -181,12 +181,13 @@ const GoalsPage = (props) => {
               />
             </View>
             <View style={styles.goalContainer}>
-              <Text style={styles.goalLabels}>Monthly Goal:</Text>
+              <Text style={styles.goalLabels}>Monthly Goals:</Text>
               <TextInput
+                multiline={true}
                 onTouchStart={() => setClickedOnGoal(true)}
                 style={styles.usergoals}
                 value={monthlyGoals}
-                placeholder="What is something you want to do every month?"
+                placeholder="Hang out with my friends three times, reach out to acquaintances 4 times."
                 onChangeText={updateMonthlyGoal}
                 onEndEditing={() => {
                   setClickedOnGoal(false);
@@ -194,12 +195,13 @@ const GoalsPage = (props) => {
               />
             </View>
             <View style={styles.goalContainer}>
-              <Text style={styles.goalLabels}>Yearly Goal:</Text>
+              <Text style={styles.goalLabels}>Yearly Goals:</Text>
               <TextInput
                 onTouchStart={() => setClickedOnGoal(true)}
+                 multiline={true}
                 style={styles.usergoals}
                 value={yearlyGoals}
-                placeholder="What is something you want to do every year?"
+                placeholder="DOTS,idk"
                 onChangeText={updateYearlyGoal}
                 onEndEditing={() => {
                   setClickedOnGoal(false);
@@ -225,11 +227,11 @@ const styles = StyleSheet.create({
   goals: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   usergoals: {
     fontFamily: 'Futura',
+    textAlign: 'left',
   },
   goalLabels: {
     fontWeight: 'bold',

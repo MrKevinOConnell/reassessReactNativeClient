@@ -22,7 +22,7 @@ const useChat = () => {
         .then((res) => {
           const recievedMessages = res.data;
           if (messages.length !== recievedMessages.length)
-            setMessages(messages);
+            setMessages(recievedMessages);
         });
     }
     getMessages();
@@ -40,7 +40,7 @@ const useChat = () => {
       };
       setMessages((messages) => [...messages, incomingMessage]);
       const payload = {id, message};
-      async function addMessage() {
+     /* async function addMessage() {
         await axios
           .post(`${SOCKET_SERVER_URL}/api/chatrooms/${id}/messages`, payload)
           .then((response) => {
@@ -53,6 +53,7 @@ const useChat = () => {
           });
       }
       addMessage();
+      */
     });
 
     return () => {

@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  Keyboard,
 } from 'react-native';
 const Login = ({navigation}) => {
   function handleLoginClick() {
@@ -35,6 +36,8 @@ const Login = ({navigation}) => {
           placeholder="Email..."
           placeholderTextColor="#003f5c"
           onChangeText={handleEmailChange}
+          blurOnSubmit={false}
+          onSubmitEditing={() => Keyboard.dismiss()}
         />
       </View>
       <View style={styles.inputView}>
@@ -45,6 +48,8 @@ const Login = ({navigation}) => {
           placeholder="Password..."
           placeholderTextColor="#003f5c"
           onChangeText={handlePasswordChange}
+          blurOnSubmit={false}
+          onSubmitEditing={() => Keyboard.dismiss()}
         />
       </View>
       <TouchableOpacity>
