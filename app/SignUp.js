@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {store} from '../store';
 import {
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 
 function SignUp({navigation}) {
@@ -17,6 +18,8 @@ function SignUp({navigation}) {
     fetchingUserError,
   } = globalState;
 
+  const signInRef = useRef();
+
   const [fieldValues, setFieldValues] = useState({
     email: '',
     password: '',
@@ -24,9 +27,7 @@ function SignUp({navigation}) {
     age: 0,
   });
 
-  const handleNewMessageChange = (event) => {
-    setNewMessage(event);
-  };
+  signInRef.current = fieldValues;
 
   const {email, password, firstName, age} = fieldValues;
   const updateEmail = (e) => {
@@ -53,21 +54,28 @@ function SignUp({navigation}) {
       age: e,
     });
   };
-  const onSave = () => {
+  const onSave = async () => {
     dispatch({
       type: 'SIGN_UP',
       payload: {
-        email: email,
-        password: password,
-        firstName: firstName,
-        age: age,
+        email: signInRef.current.email,
+        password: signInRef.current.password,
+        firstName: signInRef.current.firstName,
+        age: signInRef.current.age,
       },
     });
-    navigation.popToTop();
   };
 
+  useEffect(() => {
+    async function signIn() {
+      await onSave();
+    }
+    return () => {
+      signIn();
+    };
+  }, []);
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
@@ -105,9 +113,6 @@ function SignUp({navigation}) {
           value={age}
         />
       </View>
-      <TouchableOpacity onPress={onSave}>
-        <Text style={styles.forgot}>SUBMIT!</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -125,10 +130,10 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   inputView: {
-    width: '80%',
     backgroundColor: '#465881',
     borderRadius: 25,
     height: 50,
+    width: Dimensions.get('window').width,
     marginBottom: 20,
     justifyContent: 'center',
     padding: 20,

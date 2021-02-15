@@ -26,18 +26,6 @@ const chatroomReducerActions = {
       updatingCurrentConvo: false,
       updatingConvoError: null,
     }),
-    CHANGE_ROOM_ID__STARTED: (state) => ({...state, updatingRoomId: true}),
-    CHANGE_ROOM_ID__FAILED: (state, {payload}) => ({
-      ...state,
-      updatingRoomId: false,
-      updatingRoomIdError: payload,
-    }),
-    CHANGE_ROOM_ID__FINISHED: (state, {payload}) => ({
-      ...state,
-      updatingRoomId: false,
-      updatingRoomIdError: null,
-      roomId: payload,
-    }),
   },
 
   // Asynchronous actions
@@ -69,15 +57,6 @@ const chatroomReducerActions = {
         dispatch({type: 'ADD_MESSAGE__FINISHED', payload: res.data});
       } catch (err) {
         dispatch({type: 'ADD_MESSAGE__FAILED', payload: err.response.data});
-      }
-    },
-    CHANGE_ROOM_ID: ({dispatch}) => async ({payload}) => {
-      try {
-        const id = payload;
-        dispatch({type: 'CHANGE_ROOM_ID__STARTED'});
-        dispatch({type: 'CHANGE_ROOM_ID__FINISHED', payload: id});
-      } catch (err) {
-        dispatch({type: 'CHANGE_ROOM_ID__FAILED', payload: err.response.data});
       }
     },
   },

@@ -39,21 +39,6 @@ const useChat = () => {
         ownedByCurrentUser: message.user._id === socketRef.current.id,
       };
       setMessages((messages) => [...messages, incomingMessage]);
-      const payload = {id, message};
-     /* async function addMessage() {
-        await axios
-          .post(`${SOCKET_SERVER_URL}/api/chatrooms/${id}/messages`, payload)
-          .then((response) => {
-            if (response.data.status) {
-              console.log(response);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      addMessage();
-      */
     });
 
     return () => {

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {store} from '../store';
 import {
   StyleSheet,
@@ -14,7 +15,7 @@ const Login = ({navigation}) => {
     dispatch({type: 'LOGIN_USER', payload: {email, password}});
   }
   const [globalState, dispatch] = store();
-  const {roomId} = globalState;
+  const {isOnboard} = globalState;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -25,6 +26,18 @@ const Login = ({navigation}) => {
   function handlePasswordChange(e) {
     setPassword(e);
   }
+
+  useEffect(() => {
+    completedOnBoarding();
+  }, []);
+
+  const completedOnBoarding = async () => {
+    const onboard = await AsyncStorage.getItem('hasOnboarded');
+    const isOnboard = JSON.parse(onboard);
+    if (!isOnboard) {
+      navigation.navigate('Onboard');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -57,9 +70,6 @@ const Login = ({navigation}) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.loginBtn} onPress={handleLoginClick}>
         <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
-        <Text style={styles.loginText}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );

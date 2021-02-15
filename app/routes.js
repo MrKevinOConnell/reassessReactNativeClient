@@ -7,34 +7,33 @@ import NonOnboarding from './NonOnboarding';
 import Login from './Login';
 import SignUp from './SignUp';
 import MainMenu from './MainMenu';
+import ChatRoom from './ChatRoom';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-gesture-handler';
 import {store} from '../store';
+import Onboarding from './OnboardingScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Routes = (props) => {
   const [globalState, dispatch] = store();
-  const {loggedIn} = globalState;
-  const [isIn, setIsIn] = useState(false);
-  const [isFirstTime, setIsFirstTime] = useState(false);
-
-  useEffect(() => {
-    setIsIn(loggedIn);
-  }, [loggedIn]);
-
-  useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched').then((value) => {
-      if (value == null) {
-        AsyncStorage.setItem('alreadyLaunched', 'true');
-        setIsFirstTime(true);
+  const {loggedIn, hasOnboarded} = globalState;
+  const [hasUserOnboarded, setHasOnboarded] = useState(false);
+  const onboardCheck = async () => {
+    const value = await AsyncStorage.getItem('hasOnboarded');
+    try {
+      if (hasOnboarded) {
+        await AsyncStorage.setItem('hasOnboarded', 'true');
+        setHasOnboarded(hasOnboarded);
+      } else if (value != null) {
+        setHasOnboarded(hasOnboarded);
       }
-    });
-  }, []);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  return (
-      <NonOnboarding />
-  );
+  return <NonOnboarding />;
 };
 export default Routes;

@@ -15,6 +15,21 @@ const loginAuthReducerActions = {
       updatingGoals: false,
       currentUser: {...payload},
     }),
+    CHANGE_HAS_ONBOARDED__STARTED: (state) => ({
+      ...state,
+      updatingHasOnboarded: true,
+    }),
+    CHANGE_HAS_ONBOARDED__FAILED: (state, {payload}) => ({
+      ...state,
+      updatingHasOnboarded: false,
+      updatingHasOnboardedError: payload,
+    }),
+    CHANGE_HAS_ONBOARDED__FINISHED: (state, {payload}) => ({
+      ...state,
+      updatingHasOnboarded: false,
+      updatingHasOnboardedError: null,
+      hasOnboarded: payload,
+    }),
   },
   // Asynchronous actions
   // Each async action should have 3 related synchronous actions:
@@ -34,6 +49,21 @@ const loginAuthReducerActions = {
         dispatch({
           type: 'UPDATE_GOALS__FAILED',
           payload: _.get(err, 'response.data'),
+        });
+      }
+    },
+    CHANGE_HAS_ONBOARDED: ({dispatch}) => async ({payload}) => {
+      try {
+        const hasOnboarded = payload;
+        dispatch({type: 'CHANGE_HAS_ONBOARDED__STARTED'});
+        dispatch({
+          type: 'CHANGE_HAS_ONBOARDED__FINISHED',
+          payload: hasOnboarded,
+        });
+      } catch (err) {
+        dispatch({
+          type: 'CHANGE_HAS_ONBOARDED__FAILED',
+          payload: err.response.data,
         });
       }
     },

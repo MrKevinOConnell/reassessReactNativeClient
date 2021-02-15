@@ -8,6 +8,9 @@ const initialState = {
   loggedIn: false,
   loginError: null,
   currentUser: {},
+  updatingHasOnboarded: null,
+  updatingHasOnboardedError: null,
+  hasOnboarded: false,
   updatingGoals: null,
   updatingGoalsError: null,
   //grabbing and updating convos
