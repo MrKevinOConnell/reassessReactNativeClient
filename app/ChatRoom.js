@@ -170,7 +170,8 @@ const ChatRoom = (props) => {
           inverted={false}
           bottomOffset={75}
           user={{
-            _id: '1',
+            _id: currentUser.id,
+            name: currentUser.firstName,
           }}
         />
       </View>

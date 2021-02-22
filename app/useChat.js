@@ -22,22 +22,22 @@ const useChat = (id) => {
         })
         .then((res) => {
           const recievedMessages = res.data;
-          if (messages.length !== recievedMessages.length)
+          if (messages.length !== recievedMessages.length) {
             setMessages(recievedMessages);
+          }
         });
     }
     getMessages();
   }, []);
 
   useEffect(() => {
-    socketRef.current = SocketIOClient(SOCKET_SERVER_URL, {
-      query: {id},
-    });
+    socketRef.current = SocketIOClient(SOCKET_SERVER_URL);
+    socketRef.current.emit('join', id);
 
     socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
       const incomingMessage = {
         ...message,
-        ownedByCurrentUser: message.user._id === socketRef.current.id,
+        ownedByCurrentUser: message.user._id === currentUser.id,
       };
       setMessages((messages) => [...messages, incomingMessage]);
     });
@@ -50,6 +50,7 @@ const useChat = (id) => {
     UUIDGenerator.getRandomUUID().then((uuid) => {
       socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
         _id: uuid,
+        roomId: id,
         createdAt: new Date(),
         text: message,
         user: {
