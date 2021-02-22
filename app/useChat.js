@@ -2,14 +2,15 @@ import React, {useEffect, useRef, useState} from 'react';
 import UUIDGenerator from 'react-native-uuid-generator';
 import axios from 'axios';
 import SocketIOClient from 'socket.io-client';
+import {store} from '../store';
 
-const USER_ID = '@userId';
 const NEW_CHAT_MESSAGE_EVENT = 'newChatMessage';
 const SOCKET_SERVER_URL = 'http://localhost:8080';
-const useChat = () => {
+const useChat = (id) => {
+  const [globalState, dispatch] = store();
+  const {currentUser} = globalState;
   const socketRef = useRef();
   const [messages, setMessages] = useState([]);
-  const id = '100';
 
   useEffect(() => {
     async function getMessages() {
@@ -52,8 +53,8 @@ const useChat = () => {
         createdAt: new Date(),
         text: message,
         user: {
-          _id: '1',
-          name: 'Kevin',
+          _id: currentUser.id,
+          name: currentUser.firstName,
         },
       });
     });

@@ -27,6 +27,7 @@ const loginAuthReducerActions = {
       createdUser: true,
       creatingUser: false,
       creatingUserError: null,
+      loggedIn: true,
       currentUser: {...payload},
     }),
 

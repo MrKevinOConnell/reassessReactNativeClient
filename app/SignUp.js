@@ -7,7 +7,9 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  Keyboard,
 } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 
 function SignUp({navigation}) {
   const [globalState, dispatch] = store();
@@ -25,6 +27,7 @@ function SignUp({navigation}) {
     password: '',
     firstName: '',
     age: 0,
+    category: '',
   });
 
   signInRef.current = fieldValues;
@@ -54,14 +57,21 @@ function SignUp({navigation}) {
       age: e,
     });
   };
+  const updateCategory = (e) => {
+    setFieldValues({
+      ...fieldValues,
+      category: e,
+    });
+  };
   const onSave = async () => {
-    dispatch({
+    await dispatch({
       type: 'SIGN_UP',
       payload: {
         email: signInRef.current.email,
         password: signInRef.current.password,
         firstName: signInRef.current.firstName,
         age: signInRef.current.age,
+        category: signInRef.current.category,
       },
     });
   };
@@ -93,6 +103,8 @@ function SignUp({navigation}) {
           placeholderTextColor="#003f5c"
           onChangeText={updatePassword}
           value={password}
+          blurOnSubmit={false}
+          onSubmitEditing={() => Keyboard.dismiss()}
         />
       </View>
       <View style={styles.inputView}>
@@ -111,6 +123,15 @@ function SignUp({navigation}) {
           placeholderTextColor="#003f5c"
           onChangeText={updateAge}
           value={age}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <RNPickerSelect
+          onValueChange={(category) => updateCategory(category)}
+          items={[
+            {label: 'Confidence', value: 'Confidence'},
+            {label: 'Career', value: 'Career'},
+          ]}
         />
       </View>
     </View>

@@ -157,6 +157,7 @@ const GoalsPage = (props) => {
               <Text style={styles.goalLabels}>Daily Goals:</Text>
               <TextInput
                 onTouchStart={() => setClickedOnGoal(true)}
+                multiline={true}
                 style={styles.usergoals}
                 value={dailyGoals}
                 placeholder="get up at 8AM."
@@ -198,7 +199,7 @@ const GoalsPage = (props) => {
               <Text style={styles.goalLabels}>Yearly Goals:</Text>
               <TextInput
                 onTouchStart={() => setClickedOnGoal(true)}
-                 multiline={true}
+                multiline={true}
                 style={styles.usergoals}
                 value={yearlyGoals}
                 placeholder="DOTS,idk"

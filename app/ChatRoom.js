@@ -17,7 +17,7 @@ import {GiftedChat, InputToolbar} from 'react-native-gifted-chat';
 const ChatRoom = (props) => {
   const [globalState, dispatch] = store();
   const {currentUser} = globalState;
-  const [id, setId] = useState('100');
+  const [id, setId] = useState('');
   const {messages, sendMessage, filterMessages} = useChat(id);
   const [newMessage, setNewMessage] = useState('');
   const [searchMessage, setSearchMessage] = useState('');
@@ -26,6 +26,11 @@ const ChatRoom = (props) => {
   const [tempMessages, setTempMessages] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
+
+
+  useEffect(() => {
+    setId(currentUser.chatRoom);
+  }, []);
 
   const handleNewMessageChange = (event) => {
     setNewMessage(event);

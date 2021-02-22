@@ -17,23 +17,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Routes = (props) => {
-  const [globalState, dispatch] = store();
-  const {loggedIn, hasOnboarded} = globalState;
-  const [hasUserOnboarded, setHasOnboarded] = useState(false);
-  const onboardCheck = async () => {
-    const value = await AsyncStorage.getItem('hasOnboarded');
-    try {
-      if (hasOnboarded) {
-        await AsyncStorage.setItem('hasOnboarded', 'true');
-        setHasOnboarded(hasOnboarded);
-      } else if (value != null) {
-        setHasOnboarded(hasOnboarded);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return <NonOnboarding />;
 };
 export default Routes;
