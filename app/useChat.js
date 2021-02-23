@@ -26,6 +26,7 @@ const useChat = (id) => {
             setMessages(recievedMessages);
           }
         });
+
     }
     getMessages();
   }, []);
@@ -35,11 +36,7 @@ const useChat = (id) => {
     socketRef.current.emit('join', id);
 
     socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
-      const incomingMessage = {
-        ...message,
-        ownedByCurrentUser: message.user._id === currentUser.id,
-      };
-      setMessages((messages) => [...messages, incomingMessage]);
+      setMessages((messages) => [...messages, message]);
     });
 
     return () => {
@@ -53,12 +50,14 @@ const useChat = (id) => {
         roomId: id,
         createdAt: new Date(),
         text: message,
+
         user: {
           _id: currentUser.id,
           name: currentUser.firstName,
         },
       });
     });
+    dispatch({type: 'ADD_MESSAGE', payload: {message, id}});
   };
 
   const filterMessages = (messages) => {

@@ -27,7 +27,6 @@ const ChatRoom = (props) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
 
-
   useEffect(() => {
     setId(currentUser.chatRoom);
   }, []);
@@ -123,7 +122,7 @@ const ChatRoom = (props) => {
     return (
       <View style={styles.container}>
         <Appbar.Header style={styles.appbar}>
-          <Appbar.Content title="Kevin" subtitle="Online!"/>
+          <Appbar.Content title="Kevin" subtitle="Online!" />
           <Appbar.Action icon="magnify" onPress={_handleSearch} />
           <Appbar.Action icon={MORE_ICON} onPress={toggleModal} />
         </Appbar.Header>
@@ -142,7 +141,7 @@ const ChatRoom = (props) => {
           inverted={false}
           bottomOffset={75}
           user={{
-            _id: '1',
+            _id: currentUser.id,
           }}
         />
       </View>
@@ -151,7 +150,7 @@ const ChatRoom = (props) => {
     return (
       <View style={styles.container}>
         <Appbar.Header style={styles.appbar}>
-           <Appbar.Content title="Kevin" subtitle="Online!"/>
+          <Appbar.Content title="Kevin" subtitle="Online!" />
           <Appbar.Action icon="magnify" onPress={_handleSearch} />
           <Appbar.Action
             icon={MORE_ICON}
