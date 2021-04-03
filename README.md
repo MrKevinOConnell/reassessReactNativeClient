@@ -1,5 +1,5 @@
 # Reassess App
-A app that connects a user to a life coach. Uses SocketIO as well as sequelize to setup messaging.
+A app that connects a user to a life coach saved within the postgres database (within https://github.com/MrKevinOConnell/reassess). Uses SocketIO as well as sequelize to setup messaging.
 
 ## Setup
 type `yarn` to install dependencies, then cd into `ios` and enter `pod install`
